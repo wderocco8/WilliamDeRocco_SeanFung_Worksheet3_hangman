@@ -3,4 +3,6 @@
     <string name="Choose">CHOOSE A LETTER</string>
     <string name="Hangman_identifier">Hangman</string>
     <string name="welcome">Welcome to Hangman!</string>
+    <string name="hint">Hint</string>
+    <string name="newGame">New Game</string>
 </resources>
