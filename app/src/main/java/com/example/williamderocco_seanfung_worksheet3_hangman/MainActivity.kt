@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
         val answerTextView: TextView = findViewById(R.id.answerTextView)
         val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
         val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {//Used web to find the orientation function.
             // Landscape mode
-            // Show or hide the hint button here
+            // Show hint button
             hintButton.visibility = View.VISIBLE // or View.GONE to hide it
         } else {
             // Portrait mode
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             hintButton.visibility = View.GONE
         }
         hangmanViewModel.gameOutcomeLiveData.observe(this) { outcome ->
-            when (outcome) {
+            when (outcome) {//Used CHAT GPT for help with this. This determines what the text will be if there is a winner
                 GameOutcome.WIN -> winGame(hangmanViewModel.answer)
                 GameOutcome.LOSS -> loseGame(hangmanViewModel.answer)
             }
