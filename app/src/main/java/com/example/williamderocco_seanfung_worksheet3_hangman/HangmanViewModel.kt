@@ -48,6 +48,7 @@ class HangmanViewModel : ViewModel() {
 
     private fun getUnderscores(word: String) {
         val sb = StringBuilder()
+        // create a string of underscores of length : word.length
         word.forEach { _ -> sb.append("_")}
         underscoredLetters = sb.toString()
     }
