@@ -24,6 +24,8 @@
         android:layout_height="wrap_content"
         android:text="@string/Choose"
         android:paddingTop="200dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
         app:layout_constraintTop_toBottomOf="@+id/welcome"
         app:layout_constraintRight_toRightOf="@id/keyboardRow1"
         app:layout_constraintLeft_toLeftOf="@+id/keyboardRow1"/>
@@ -83,16 +85,20 @@
         android:id="@+id/hintTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/hint"
-        app:layout_constraintRight_toRightOf="@id/hint"
-        app:layout_constraintTop_toBottomOf="@id/hint"/>
+        app:layout_constraintLeft_toRightOf="@+id/hint"
+        app:layout_constraintTop_toBottomOf="@id/keyboardRow4"
+        app:layout_constraintBottom_toBottomOf="@+id/hint"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:textSize="20sp"
+        android:textStyle="bold" />
     <Button
         android:id="@+id/newGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@+id/hintTextView"
-        app:layout_constraintRight_toRightOf="@+id/hintTextView"
-        app:layout_constraintTop_toBottomOf="@+id/hintTextView"
+        app:layout_constraintLeft_toLeftOf="@+id/hint"
+        app:layout_constraintRight_toRightOf="@+id/hint"
+        app:layout_constraintTop_toBottomOf="@+id/hint"
         android:text="@string/newGame"/>
 
 <!--The right side of the screen-->
@@ -107,4 +113,14 @@
         android:paddingEnd="160dp"
         android:paddingStart="160dp"
         android:contentDescription="@string/Hangman_identifier"/>
+    <TextView
+        android:id="@+id/answerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/hangmanImageView"
+        app:layout_constraintRight_toRightOf="@+id/hangmanImageView"
+        app:layout_constraintLeft_toLeftOf="@id/hangmanImageView"
+        android:textStyle="bold"
+        android:textSize="50sp"
+        android:text="Chickens"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

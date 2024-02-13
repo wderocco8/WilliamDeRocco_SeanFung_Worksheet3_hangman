@@ -88,16 +88,23 @@
         app:layout_constraintRight_toRightOf="@id/keyboardRow4"
         android:text="@string/newGame"
         />
-<!--    <Button-->
-<!--        android:id="@+id/hint"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/newGame"-->
-<!--        app:layout_constraintLeft_toLeftOf="@id/newGame"-->
-<!--        app:layout_constraintRight_toRightOf="@id/newGame"-->
-<!--        android:paddingTop="1200dp"-->
-<!--        android:enabled="false"-->
-<!--        android:background="@color/white"/>-->
+    <TextView
+        android:id="@+id/hintTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/newGame"
+        app:layout_constraintLeft_toLeftOf="@+id/newGame"
+        app:layout_constraintRight_toRightOf="@id/newGame"
+        android:paddingBottom="10000dp" />
+    <Button
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/newGame"
+        app:layout_constraintLeft_toLeftOf="@id/newGame"
+        app:layout_constraintRight_toRightOf="@id/newGame"
+        android:enabled="false"
+        android:background="@color/white"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
