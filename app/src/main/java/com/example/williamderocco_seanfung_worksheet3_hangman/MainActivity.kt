@@ -20,37 +20,7 @@ class MainActivity : AppCompatActivity() {
         val keyboardRow3: LinearLayout = findViewById(R.id.keyboardRow3)
         val keyboardRow4: LinearLayout = findViewById(R.id.keyboardRow4)
 
-        initializeKeyboardButtons(keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
-    }
-
-    private fun initializeKeyboardButtons(
-        keyboardRow1: LinearLayout,
-        keyboardRow2: LinearLayout,
-        keyboardRow3: LinearLayout,
-        keyboardRow4: LinearLayout
-    ) {
-        val alphabet = "abcdefghijklmnopqrstuvwxyz"
-
-        // Loop to create buttons for each letter 'a' to 'z'
-        for ((index, char) in alphabet.withIndex()) {
-            val button = Button(this)
-            button.text = char.toString()
-            button.layoutParams = LinearLayout.LayoutParams(
-                100,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            button.setOnClickListener {
-
-            }
-
-            // Determine which row to add the button to
-            when {
-                index < 8 -> keyboardRow1.addView(button)
-                index < 16 -> keyboardRow2.addView(button)
-                index < 23 -> keyboardRow3.addView(button)
-                else -> keyboardRow4.addView(button)
-            }
-        }
+        hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
     }
 
 

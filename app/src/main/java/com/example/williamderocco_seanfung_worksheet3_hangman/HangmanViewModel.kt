@@ -1,5 +1,8 @@
 package com.example.williamderocco_seanfung_worksheet3_hangman
 
+import android.content.Context
+import android.widget.Button
+import android.widget.LinearLayout
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "hangmanView"
@@ -25,6 +28,37 @@ class HangmanViewModel : ViewModel() {
         "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
+
+    fun initializeKeyboardButtons(
+        context: Context,
+        keyboardRow1: LinearLayout,
+        keyboardRow2: LinearLayout,
+        keyboardRow3: LinearLayout,
+        keyboardRow4: LinearLayout
+    ) {
+        val alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+        // Loop to create buttons for each letter 'a' to 'z'
+        for ((index, char) in alphabet.withIndex()) {
+            val button = Button(context)
+            button.text = char.toString()
+            button.layoutParams = LinearLayout.LayoutParams(
+                100,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            button.setOnClickListener {
+
+            }
+
+            // Determine which row to add the button to
+            when {
+                index < 8 -> keyboardRow1.addView(button)
+                index < 16 -> keyboardRow2.addView(button)
+                index < 23 -> keyboardRow3.addView(button)
+                else -> keyboardRow4.addView(button)
+            }
+        }
+    }
 
     fun guess(letter: Char, hint: Boolean) {
         usedLetters.add(letter.toString())
