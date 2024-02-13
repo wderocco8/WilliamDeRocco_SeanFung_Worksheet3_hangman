@@ -6,10 +6,13 @@ import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "hangmanView"
 class HangmanViewModel : ViewModel() {
+    // class variables
     var answer = ""
     var hint = ""
     var usedLetters = mutableListOf<String>()
@@ -17,12 +20,10 @@ class HangmanViewModel : ViewModel() {
     private var maxTries = 6
     var currentTries = 0
     lateinit var underscoredLetters: String
-    var hangman: Int = R.drawable.state0
+    private var hangman: Int = R.drawable.state0
     var playing = false
     var win = false
     var firstHintShowed = false
-
-
     private val wordDictionary: Map<String, List<String>> = mapOf(
         "country" to listOf("america", "japan", "china", "mexico", "korea"),
         "animal" to listOf("elephant", "zebra", "chicken", "anaconda", "hippo"),
@@ -30,6 +31,14 @@ class HangmanViewModel : ViewModel() {
         "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
+
+    // Define MutableLiveData for underscoredLetters and hangmanImage (chatGPT helped with this)
+    private val _underscoredLettersLiveData = MutableLiveData<String>()
+    val underscoredLettersLiveData: LiveData<String> = _underscoredLettersLiveData
+
+    private val _hangmanImageLiveData = MutableLiveData<Int>()
+    val hangmanImageLiveData: LiveData<Int> = _hangmanImageLiveData
+
 
     fun newGame(){
         val currentKey =  wordDictionary.keys.random()
@@ -51,6 +60,7 @@ class HangmanViewModel : ViewModel() {
         // create a string of underscores of length : word.length
         word.forEach { _ -> sb.append("_")}
         underscoredLetters = sb.toString()
+        _underscoredLettersLiveData.value = underscoredLetters // Update underscoredLettersLiveData
     }
 
     fun initializeKeyboardButtons(
@@ -126,17 +136,18 @@ class HangmanViewModel : ViewModel() {
 
     }
 
-    fun nextHangman(): Int{//Updates the drawings
-        return when (currentTries) {
+    fun nextHangman(): Int {
+        val hangmanImage = when (currentTries) {
             0 -> R.drawable.state0
             1 -> R.drawable.state1
             2 -> R.drawable.state2
             3 -> R.drawable.state3
             4 -> R.drawable.state4
             5 -> R.drawable.state5
-            6 -> R.drawable.state6
             else -> R.drawable.state6
         }
+        _hangmanImageLiveData.value = hangmanImage // Update hangmanImageLiveData
+        return hangmanImage
     }
 
 }
