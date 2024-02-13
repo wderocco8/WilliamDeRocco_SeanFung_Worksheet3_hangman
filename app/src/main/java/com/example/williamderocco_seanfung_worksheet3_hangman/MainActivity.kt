@@ -1,7 +1,9 @@
 package com.example.williamderocco_seanfung_worksheet3_hangman
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -28,6 +30,16 @@ class MainActivity : AppCompatActivity() {
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
         val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Landscape mode
+            // Show or hide the hint button here
+            hintButton.visibility = View.VISIBLE // or View.GONE to hide it
+        } else {
+            // Portrait mode
+            // Hide the hint button
+            hintButton.visibility = View.GONE
+        }
         hangmanViewModel.gameOutcomeLiveData.observe(this) { outcome ->
             when (outcome) {
                 GameOutcome.WIN -> winGame(hangmanViewModel.answer)
