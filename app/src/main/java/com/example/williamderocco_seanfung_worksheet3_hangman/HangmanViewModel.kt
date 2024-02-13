@@ -172,22 +172,21 @@ class HangmanViewModel : ViewModel() {
 
 
     fun obtainHint(context: Context): Int {
+        Log.d("current hints:", numHints.toString())
         var returnVal = -1
-        // case 1: No more hints available
-        if (numHints >= 2) {
-            return -1
-        }
 
         // case 2: reached maximum number of tries
         if (currentTries == maxTries - 1) {
             playing = false
             win = false
+            return -1
         }
 
         when (numHints) {
             // first hint: display message for hint suggestion
             0 -> {
                 _hintLiveData.value = hint
+                numHints++
                 return 0
             }
             // second hint: hide half of letters that are not in word
@@ -202,6 +201,7 @@ class HangmanViewModel : ViewModel() {
             }
             // No more hints available
             else -> {
+                Log.d(TAG, "deez nuts")
                 Toast.makeText(context, "No more hints :(", Toast.LENGTH_SHORT).show()
                 return -1
             }
