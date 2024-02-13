@@ -1,6 +1,8 @@
 package com.example.williamderocco_seanfung_worksheet3_hangman
 
 import android.content.Context
+import android.nfc.Tag
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -18,7 +20,6 @@ class HangmanViewModel : ViewModel() {
     var hangman: Int = R.drawable.state0
     var playing = false
     var win = false
-    var play = false
     var firstHintShowed = false
 
 
@@ -43,7 +44,6 @@ class HangmanViewModel : ViewModel() {
         playing = true
         firstHintShowed = false
         hangman = nextHangman()
-
     }
 
     private fun getUnderscores(word: String) {
@@ -85,7 +85,11 @@ class HangmanViewModel : ViewModel() {
     }
 
     private fun guess(context: Context, letter: Char, hint: Boolean) {
-        if (playing) {
+        if (!playing) {
+            Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
+        } else if (usedLetters.contains(letter.toString())) {
+            Toast.makeText(context, "Letter already selected", Toast.LENGTH_SHORT).show()
+        } else {
             usedLetters.add(letter.toString())
             val indexLetter = mutableListOf<Int>()
 
@@ -118,8 +122,6 @@ class HangmanViewModel : ViewModel() {
                 playing = false
                 win = true
             }
-        } else {
-            Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         }
 
     }
