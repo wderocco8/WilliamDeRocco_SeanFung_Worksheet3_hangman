@@ -58,6 +58,7 @@ class HangmanViewModel : ViewModel() {
         playing = true
         firstHintShowed = false
         hangman = nextHangman()
+        _hintLiveData.value = ""
     }
 
     private fun getUnderscores(word: String) {
@@ -111,7 +112,7 @@ class HangmanViewModel : ViewModel() {
         }
     }
 
-    private fun guess(context: Context, letter: Char, hint: Boolean) {
+    private fun guess(context: Context, letter: Char, isHint: Boolean) {
         if (!playing) {
             Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         } else if (usedLetters.contains(letter.toString())) {
@@ -133,7 +134,7 @@ class HangmanViewModel : ViewModel() {
 
             // case 1: incorrect guess (and no hint)
             if (indexLetter.isEmpty()){
-                if(!hint)currentTries++
+                if(!isHint) currentTries++
                 hangman = nextHangman()
             }
 
@@ -192,7 +193,7 @@ class HangmanViewModel : ViewModel() {
             // second hint: hide half of letters that are not in word
             1 -> {
                 returnVal = 1
-//            hideLetters()
+                hideLetters(context)
             }
             // third hint: show all vowels in word (and disable remaining vowels)
             2 -> {
@@ -213,6 +214,28 @@ class HangmanViewModel : ViewModel() {
         return returnVal
     }
 
+    private fun hideLetters(context: Context) {
+        val numToRemove = (26 - usedLetters.size) / 2
+        Log.d("numToRemove", numToRemove.toString())
+        var numRemoved = 0
+        for (letter in 'a'..'z') {
+            val l = letter.toString().lowercase()
+            // check that hint is in NOT in answer or usedLetters
+            if (l !in answer.lowercase() && !usedLetters.contains(l)) {
+                // make guess and increment count for removed letters
+                this.guess(context, letter, true)
+                numRemoved++
+
+                Log.d("letter", letter.toString())
+                Log.d("numRemoved", numRemoved.toString())
+                Log.d("answer", answer)
+                Log.d("is in?", "true")
+            }
+            if (numRemoved == numToRemove){
+                return
+            }
+        }
+    }
 
     companion object {//Chat GPT wrote all the code below so that I can save all this time
         private const val KEY_UNDERSCORED_LETTERS = "underscored_letters"
@@ -227,7 +250,7 @@ class HangmanViewModel : ViewModel() {
         private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
     }
     
-    // Save instance state
+    // Save instance state (overrides normal savInstanceState and restoreInstanceState functions)
     fun saveInstanceState(outState: Bundle) {
         outState.putString(KEY_UNDERSCORED_LETTERS, underscoredLetters)
         outState.putInt(KEY_HANGMAN_IMAGE, hangman)
