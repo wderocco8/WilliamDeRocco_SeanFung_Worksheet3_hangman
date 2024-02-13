@@ -122,4 +122,15 @@
         app:layout_constraintLeft_toLeftOf="@id/hangmanImageView"
         android:textStyle="bold"
         android:textSize="50sp" />
+    <TextView
+        android:id="@+id/winOrLose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/hangmanImageView"
+        app:layout_constraintBottom_toBottomOf="@+id/hangmanImageView"
+        app:layout_constraintLeft_toLeftOf="@+id/hangmanImageView"
+        app:layout_constraintRight_toRightOf="@id/hangmanImageView"
+        android:textSize="80sp"
+        android:textStyle="bold"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
