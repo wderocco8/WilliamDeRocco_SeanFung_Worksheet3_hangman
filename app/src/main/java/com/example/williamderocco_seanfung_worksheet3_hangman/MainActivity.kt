@@ -26,14 +26,17 @@ class MainActivity : AppCompatActivity() {
         val hintButton: Button = findViewById(R.id.hint)
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
+        val hintTextView: TextView = findViewById(R.id.hintTextView)
 
         // Observe LiveData and update UI (chatGPT helped with this)
         hangmanViewModel.underscoredLettersLiveData.observe(this) { underscoredLetters ->
             answerTextView.text = underscoredLetters
         }
-
         hangmanViewModel.hangmanImageLiveData.observe(this) { hangmanImage ->
             hangmanImageView.setImageResource(hangmanImage)
+        }
+        hangmanViewModel.hintLiveData.observe(this) { hint ->
+            hintTextView.text = hint
         }
 
         // initialize keyboard
@@ -45,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             hangmanViewModel.newGame() // Call newGame function when button is clicked
         }
         hintButton.setOnClickListener {
-            hangmanViewModel.hint() // Call newGame function when button is clicked
+            hangmanViewModel.obtainHint(this) // Call newGame function when button is clicked
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {

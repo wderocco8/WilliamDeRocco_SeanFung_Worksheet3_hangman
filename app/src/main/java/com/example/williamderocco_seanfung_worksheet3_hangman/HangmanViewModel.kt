@@ -40,6 +40,9 @@ class HangmanViewModel : ViewModel() {
     private val _hangmanImageLiveData = MutableLiveData<Int>()
     val hangmanImageLiveData: LiveData<Int> = _hangmanImageLiveData
 
+    private val _hintLiveData = MutableLiveData<String>()
+    val hintLiveData: LiveData<String> = _hintLiveData
+
 
     fun newGame(){
         val currentKey =  wordDictionary.keys.random()
@@ -151,22 +154,11 @@ class HangmanViewModel : ViewModel() {
         _hangmanImageLiveData.value = hangmanImage // Update hangmanImageLiveData
         return hangmanImage
     }
-    companion object {//Chat GPT wrote all the code below so that I can save all this time
-        private const val KEY_UNDERSCORED_LETTERS = "underscored_letters"
-        private const val KEY_HANGMAN_IMAGE = "hangman_image"
-        private const val KEY_ANSWER = "answer"
-        private const val KEY_HINT = "hint"
-        private const val KEY_USED_LETTERS = "used_letters"
-        private const val KEY_NUM_HINTS = "num_hints"
-        private const val KEY_CURRENT_TRIES = "current_tries"
-        private const val KEY_PLAYING = "playing"
-        private const val KEY_WIN = "win"
-        private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
-    }
 
 
-    fun hint(): Int {
-        var returnVal: Int
+
+    fun obtainHint(context: Context): Int {
+        var returnVal = -1
         // case 1: No more hints available
         if (numHints >= 2) {
             return -1
@@ -179,16 +171,25 @@ class HangmanViewModel : ViewModel() {
         }
 
         when (numHints) {
+            // first hint: display message for hint suggestion
             0 -> {
+                _hintLiveData.value = hint
+                return 0
+            }
+            // second hint: hide half of letters that are not in word
+            1 -> {
                 returnVal = 1
 //            hideLetters()
             }
-            1 -> {
+            // third hint: show all vowels in word (and disable remaining vowels)
+            2 -> {
                 returnVal = 2
 //            showVowels()
             }
+            // No more hints available
             else -> {
-                return -1 // No more hints available
+                Toast.makeText(context, "No more hints :(", Toast.LENGTH_SHORT).show()
+                return -1
             }
         }
 
@@ -199,7 +200,19 @@ class HangmanViewModel : ViewModel() {
         return returnVal
     }
 
-    
+
+    companion object {//Chat GPT wrote all the code below so that I can save all this time
+        private const val KEY_UNDERSCORED_LETTERS = "underscored_letters"
+        private const val KEY_HANGMAN_IMAGE = "hangman_image"
+        private const val KEY_ANSWER = "answer"
+        private const val KEY_HINT = "hint"
+        private const val KEY_USED_LETTERS = "used_letters"
+        private const val KEY_NUM_HINTS = "num_hints"
+        private const val KEY_CURRENT_TRIES = "current_tries"
+        private const val KEY_PLAYING = "playing"
+        private const val KEY_WIN = "win"
+        private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
+    }
     
     // Save instance state
     fun saveInstanceState(outState: Bundle) {
