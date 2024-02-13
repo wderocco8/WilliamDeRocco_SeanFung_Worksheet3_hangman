@@ -7,6 +7,9 @@ import android.widget.LinearLayout
 
 class MainActivity : AppCompatActivity() {
 
+    // initialize set of letters which have been guessed
+    private val guessedLetters = mutableSetOf<Char>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             button.setOnClickListener {
-                // Handle button click event
+                guessLetter(char)
             }
 
             // Determine which row to add the button to
@@ -48,6 +51,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun guessLetter(letter: Char) {
+        if (guessedLetters.contains(letter)) {
+            // Letter has already been guessed
+            // Implement your logic here, such as showing a toast or changing the button appearance
+            return
+        }
+
+        // Add the letter to the set of guessed letters
+        guessedLetters.add(letter)
+
+        // Implement further logic for handling the guessed letter, such as checking if it's correct or not
+    }
+
+
+    // reset function
+
+    // hint function
+
 
 
 
