@@ -43,9 +43,12 @@ class MainActivity : AppCompatActivity() {
             when {
                 index < 8 -> keyboardRow1.addView(button)
                 index < 16 -> keyboardRow2.addView(button)
-                index < 24 -> keyboardRow3.addView(button)
+                index < 23 -> keyboardRow3.addView(button)
                 else -> keyboardRow4.addView(button)
             }
         }
     }
+
+
+
 }
