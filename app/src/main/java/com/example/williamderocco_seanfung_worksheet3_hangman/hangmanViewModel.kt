@@ -41,16 +41,19 @@ class hangmanViewModel : ViewModel() {
             underscoredWord = stringBuild.toString()
         }
 
+        // case 1: incorrect guess (and no hint)
         if (indexLetter.isEmpty()){
             if(!hint)currentTries++
             hangman = nextHangman()
         }
 
+        // case 2: hit max tries
         if (currentTries == maxTries){
             playing = false
             win = false
         }
 
+        // case 3: guessed correct word
         underscoredLetters = underscoredWord
         if(underscoredLetters.lowercase() == answer){
             playing = false
@@ -81,7 +84,7 @@ class hangmanViewModel : ViewModel() {
         if (word != null){
             wordUnderscored(word)
         }
-        answer = word!!//got from ChatGPT, would be a type error otherwise.
+        answer = word!! //got from ChatGPT, would be a type error otherwise.
         numHints = 0
         currentTries = 0
         playing = true
