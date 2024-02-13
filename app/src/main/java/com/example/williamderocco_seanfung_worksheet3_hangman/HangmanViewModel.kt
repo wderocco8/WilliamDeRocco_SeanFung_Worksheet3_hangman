@@ -151,4 +151,38 @@ class HangmanViewModel : ViewModel() {
         return hangmanImage
     }
 
+    fun hint(): Int {
+        var returnVal: Int
+        // case 1: No more hints available
+        if (numHints >= 2) {
+            return -1
+        }
+
+        // case 2: reached maximum number of tries
+        if (currentTries == maxTries - 1) {
+            playing = false
+            win = false
+        }
+
+        when (numHints) {
+            0 -> {
+                returnVal = 1
+//            hideLetters()
+            }
+            1 -> {
+                returnVal = 2
+//            showVowels()
+            }
+            else -> {
+                return -1 // No more hints available
+            }
+        }
+
+        currentTries++
+        numHints++
+        hangman = nextHangman()
+
+        return returnVal
+    }
+
 }
