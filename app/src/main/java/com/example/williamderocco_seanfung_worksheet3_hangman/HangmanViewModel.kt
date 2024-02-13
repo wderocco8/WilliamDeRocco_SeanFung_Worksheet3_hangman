@@ -2,6 +2,7 @@ package com.example.williamderocco_seanfung_worksheet3_hangman
 
 import android.content.Context
 import android.nfc.Tag
+import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
@@ -150,5 +151,44 @@ class HangmanViewModel : ViewModel() {
         _hangmanImageLiveData.value = hangmanImage // Update hangmanImageLiveData
         return hangmanImage
     }
+    companion object {//Chat GPT wrote all the code below so that I can save all this time
+        private const val KEY_UNDERSCORED_LETTERS = "underscored_letters"
+        private const val KEY_HANGMAN_IMAGE = "hangman_image"
+        private const val KEY_ANSWER = "answer"
+        private const val KEY_HINT = "hint"
+        private const val KEY_USED_LETTERS = "used_letters"
+        private const val KEY_NUM_HINTS = "num_hints"
+        private const val KEY_CURRENT_TRIES = "current_tries"
+        private const val KEY_PLAYING = "playing"
+        private const val KEY_WIN = "win"
+        private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
+    }
 
+    // Save instance state
+    fun saveInstanceState(outState: Bundle) {
+        outState.putString(KEY_UNDERSCORED_LETTERS, underscoredLetters)
+        outState.putInt(KEY_HANGMAN_IMAGE, hangman)
+        outState.putString(KEY_ANSWER, answer)
+        outState.putString(KEY_HINT, hint)
+        outState.putStringArrayList(KEY_USED_LETTERS, ArrayList(usedLetters))
+        outState.putInt(KEY_NUM_HINTS, numHints)
+        outState.putInt(KEY_CURRENT_TRIES, currentTries)
+        outState.putBoolean(KEY_PLAYING, playing)
+        outState.putBoolean(KEY_WIN, win)
+        outState.putBoolean(KEY_FIRST_HINT_SHOWED, firstHintShowed)
+    }
+    fun restoreInstanceState(savedInstanceState: Bundle) {
+        underscoredLetters = savedInstanceState.getString(KEY_UNDERSCORED_LETTERS, "")
+        _underscoredLettersLiveData.value = underscoredLetters
+        hangman = savedInstanceState.getInt(KEY_HANGMAN_IMAGE)
+        _hangmanImageLiveData.value = hangman
+        answer = savedInstanceState.getString(KEY_ANSWER, "")
+        hint = savedInstanceState.getString(KEY_HINT, "")
+        usedLetters.addAll(savedInstanceState.getStringArrayList(KEY_USED_LETTERS) ?: emptyList())
+        numHints = savedInstanceState.getInt(KEY_NUM_HINTS)
+        currentTries = savedInstanceState.getInt(KEY_CURRENT_TRIES)
+        playing = savedInstanceState.getBoolean(KEY_PLAYING)
+        win = savedInstanceState.getBoolean(KEY_WIN)
+        firstHintShowed = savedInstanceState.getBoolean(KEY_FIRST_HINT_SHOWED)
+    }
 }

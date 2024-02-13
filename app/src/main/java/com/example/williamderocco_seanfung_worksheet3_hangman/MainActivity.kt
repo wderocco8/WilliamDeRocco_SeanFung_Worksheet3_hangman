@@ -46,5 +46,14 @@ class MainActivity : AppCompatActivity() {
             hangmanViewModel.newGame() // Call newGame function when button is clicked
         }
     }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        hangmanViewModel.saveInstanceState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        hangmanViewModel.restoreInstanceState(savedInstanceState)
+    }
 
 }
