@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
 
-        // Observe LiveData and update UI
+        // Observe LiveData and update UI (chatGPT helped with this)
         hangmanViewModel.underscoredLettersLiveData.observe(this) { underscoredLetters ->
             answerTextView.text = underscoredLetters
         }
