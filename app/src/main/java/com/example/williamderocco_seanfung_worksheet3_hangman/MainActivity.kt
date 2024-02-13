@@ -40,12 +40,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         // initialize keyboard
-        hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
+        hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4, false)
         // start game (only initialized on initial create)
         hangmanViewModel.newGame()
 
         newGameButton.setOnClickListener {
             hangmanViewModel.newGame() // Call newGame function when button is clicked
+            // re-initialize keyboard
+            hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4, true)
         }
         hintButton.setOnClickListener {
             hangmanViewModel.obtainHint(this) // Call newGame function when button is clicked

@@ -1,6 +1,7 @@
 package com.example.williamderocco_seanfung_worksheet3_hangman
 
 import android.content.Context
+import android.graphics.Color
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
@@ -72,8 +73,17 @@ class HangmanViewModel : ViewModel() {
         keyboardRow1: LinearLayout,
         keyboardRow2: LinearLayout,
         keyboardRow3: LinearLayout,
-        keyboardRow4: LinearLayout
+        keyboardRow4: LinearLayout,
+        isNewGame: Boolean
     ) {
+        // Clear existing buttons from each LinearLayout if it's a new game
+        if (isNewGame) {
+            keyboardRow1.removeAllViews()
+            keyboardRow2.removeAllViews()
+            keyboardRow3.removeAllViews()
+            keyboardRow4.removeAllViews()
+        }
+
         val alphabet = "abcdefghijklmnopqrstuvwxyz"
 
         // Loop to create buttons for each letter 'a' to 'z'
@@ -85,7 +95,10 @@ class HangmanViewModel : ViewModel() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             button.setOnClickListener {
-                this.guess(context, char, false)
+                if (playing) {
+                    this.guess(context, char, false)
+                    button.setBackgroundColor(Color.parseColor("#888888"))
+                }
             }
 
             // Determine which row to add the button to
