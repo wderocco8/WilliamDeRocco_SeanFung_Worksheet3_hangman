@@ -25,12 +25,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:contentDescription="@string/Hangman_identifier"/>
     <TextView
+        android:id="@+id/answerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/hangmanImageView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textStyle="bold"
+        android:textSize="32sp" />
+    <TextView
         android:id="@+id/chooseLetterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Choose"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/answerTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -78,15 +86,18 @@
         app:layout_constraintTop_toBottomOf="@id/keyboardRow4"
         app:layout_constraintLeft_toLeftOf="@id/keyboardRow4"
         app:layout_constraintRight_toRightOf="@id/keyboardRow4"
-        android:text="@string/newGame"/>
-    <Button
-        android:id="@+id/hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/newGame"
-        app:layout_constraintLeft_toLeftOf="@id/newGame"
-        app:layout_constraintRight_toRightOf="@id/newGame"
-        android:text="@string/hint"/>
+        android:text="@string/newGame"
+        />
+<!--    <Button-->
+<!--        android:id="@+id/hint"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/newGame"-->
+<!--        app:layout_constraintLeft_toLeftOf="@id/newGame"-->
+<!--        app:layout_constraintRight_toRightOf="@id/newGame"-->
+<!--        android:paddingTop="1200dp"-->
+<!--        android:enabled="false"-->
+<!--        android:background="@color/white"/>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
