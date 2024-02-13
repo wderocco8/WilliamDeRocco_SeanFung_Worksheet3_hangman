@@ -135,24 +135,5 @@ class HangmanViewModel : ViewModel() {
             else -> R.drawable.state6
         }
     }
-    private fun wordUnderscored(word: String) {
-        val stringBuilder = StringBuilder()
-        word.forEach { _ -> stringBuilder.append("_") }
-        underscoredLetters = stringBuilder.toString()
-    }
-    fun gameStart(){
-        val key = wordDictionary.keys.random()
-        val word = wordDictionary[key]?.random()
-        if (word != null){
-            wordUnderscored(word)
-        }
-        answer = word!! //got from ChatGPT, would be a type error otherwise.
-        numHints = 0
-        currentTries = 0
-        playing = true
-        hangman = nextHangman()
-        hint = key
-        numHints = 0
-        usedLetters.clear() //used CHAT GPT to clear the used letters
-    }
+
 }
