@@ -65,15 +65,43 @@
         app:layout_constraintStart_toStartOf="@id/keyboardRow3"
         app:layout_constraintEnd_toEndOf="@id/keyboardRow3"
         app:layout_constraintLeft_toLeftOf="@id/keyboardRow3"
-        app:layout_constraintRight_toLeftOf="parent">
+        app:layout_constraintRight_toLeftOf="parent"
+        android:paddingBottom="50dp">
     </LinearLayout>
-    <TextView
+    <Button
         android:id="@+id/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@id/keyboardRow4"
         app:layout_constraintRight_toRightOf="@id/keyboardRow4"
         app:layout_constraintTop_toBottomOf="@id/keyboardRow4"
-        android:text="placeholder"
-        android:paddingTop="50dp"/>
+        android:text="@string/hint" />
+    <TextView
+        android:id="@+id/hintTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/hint"
+        app:layout_constraintRight_toRightOf="@id/hint"
+        app:layout_constraintTop_toBottomOf="@id/hint"/>
+    <Button
+        android:id="@+id/newGame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@+id/hintTextView"
+        app:layout_constraintRight_toRightOf="@+id/hintTextView"
+        app:layout_constraintTop_toBottomOf="@+id/hintTextView"
+        android:text="@string/newGame"/>
+
+<!--The right side of the screen-->
+    <ImageView
+        android:id="@+id/hangmanImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/state0"
+        app:layout_constraintTop_toBottomOf="@id/welcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="parent"
+        android:paddingEnd="160dp"
+        android:paddingStart="160dp"
+        android:contentDescription="@string/Hangman_identifier"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
