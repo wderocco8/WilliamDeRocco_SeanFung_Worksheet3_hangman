@@ -121,6 +121,5 @@
         app:layout_constraintRight_toRightOf="@+id/hangmanImageView"
         app:layout_constraintLeft_toLeftOf="@id/hangmanImageView"
         android:textStyle="bold"
-        android:textSize="50sp"
-        android:text="Chickens"/>
+        android:textSize="50sp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
