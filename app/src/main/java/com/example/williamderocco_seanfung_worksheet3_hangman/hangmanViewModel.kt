@@ -22,6 +22,7 @@ class hangmanViewModel : ViewModel() {
         "country" to listOf("america", "japan", "china", "mexico", "korea"),
         "animal" to listOf("elephant", "zebra", "chicken", "anaconda", "hippo"),
         "fruit" to listOf("apple", "grape", "kiwi", "pear", "orange"),
+        "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
 
@@ -68,5 +69,25 @@ class hangmanViewModel : ViewModel() {
             6 -> R.drawable.state6
             else -> R.drawable.state6
         }
+    }
+    private fun wordUnderscored(word: String) {
+        val stringBuilder = StringBuilder()
+        word.forEach { _ -> stringBuilder.append("_") }
+        underscoredLetters = stringBuilder.toString()
+    }
+    fun gameStart(){
+        val key = wordDictionary.keys.random()
+        val word = wordDictionary[key]?.random()
+        if (word != null){
+            wordUnderscored(word)
+        }
+        answer = word!!
+        numHints = 0
+        currentTries = 0
+        playing = true
+        hangman = nextHangman()
+        hint = key
+        numHints = 0
+        usedLetters.clear() //used CHAT GPT to clear the used letters
     }
 }
