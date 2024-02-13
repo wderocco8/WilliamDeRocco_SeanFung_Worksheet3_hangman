@@ -10,8 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-private val _gameOutcomeLiveData = MutableLiveData<GameOutcome>()
-val gameOutcomeLiveData: LiveData<GameOutcome> = _gameOutcomeLiveData
+
 
 enum class GameOutcome {
     WIN,
