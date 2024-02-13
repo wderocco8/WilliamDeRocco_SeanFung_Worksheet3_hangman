@@ -27,8 +27,10 @@ class MainActivity : AppCompatActivity() {
         hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
         // start game (only initialized on initial create)
         hangmanViewModel.newGame()
+        // call refreshUI
 
         newGameButton.setOnClickListener {
+            // call refreshUI
             hangmanViewModel.newGame() // Call newGame function when button is clicked
         }
     }
