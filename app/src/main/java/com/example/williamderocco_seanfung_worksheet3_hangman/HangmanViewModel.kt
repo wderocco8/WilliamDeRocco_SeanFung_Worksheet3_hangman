@@ -3,7 +3,7 @@ package com.example.williamderocco_seanfung_worksheet3_hangman
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "hangmanView"
-class hangmanViewModel : ViewModel() {
+class HangmanViewModel : ViewModel() {
     var answer = ""
     var hint = ""
     var usedLetters = mutableListOf<String>()

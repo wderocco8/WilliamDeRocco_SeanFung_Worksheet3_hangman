@@ -4,11 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
+import androidx.activity.viewModels
+
 
 class MainActivity : AppCompatActivity() {
 
-    // initialize set of letters which have been guessed
-    private val guessedLetters = mutableSetOf<Char>()
+    private val hangmanViewModel: HangmanViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             button.setOnClickListener {
-                guessLetter(char)
+
             }
 
             // Determine which row to add the button to
@@ -51,25 +52,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun guessLetter(letter: Char) {
-        if (guessedLetters.contains(letter)) {
-            // Letter has already been guessed
-            // Implement your logic here, such as showing a toast or changing the button appearance
-            return
-        }
-
-        // Add the letter to the set of guessed letters
-        guessedLetters.add(letter)
-
-        // Implement further logic for handling the guessed letter, such as checking if it's correct or not
-    }
-
-
-    // reset function
-
-    // hint function
-
 
 
 
