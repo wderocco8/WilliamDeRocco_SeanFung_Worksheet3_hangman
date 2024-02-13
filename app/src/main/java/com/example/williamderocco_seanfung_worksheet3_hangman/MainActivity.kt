@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +27,16 @@ class MainActivity : AppCompatActivity() {
         val hintButton: Button = findViewById(R.id.hint)
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
-
+        val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
+        hangmanViewModel.gameOutcomeLiveData.observe(this) { outcome ->
+            when (outcome) {
+                GameOutcome.WIN -> winGame(hangmanViewModel.answer)
+                GameOutcome.LOSS -> loseGame(hangmanViewModel.answer)
+            }
+        }
+        hangmanViewModel.winOrLoseTextLiveData.observe(this, Observer { text ->
+            winOrLoseTextView.text = text
+        })
         // Observe LiveData and update UI (chatGPT helped with this)
         hangmanViewModel.underscoredLettersLiveData.observe(this) { underscoredLetters ->
             answerTextView.text = underscoredLetters
@@ -56,6 +66,18 @@ class MainActivity : AppCompatActivity() {
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         hangmanViewModel.restoreInstanceState(savedInstanceState)
+    }
+
+
+    private fun winGame(word: String){
+        val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
+        winOrLoseTextView.text = "YOU WIN"
+    }
+    private fun loseGame(word: String){
+        val answerTextView: TextView = findViewById(R.id.answerTextView)
+        answerTextView.text = word
+        val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
+        winOrLoseTextView.text = "YOU LOSE"
     }
 
 }
