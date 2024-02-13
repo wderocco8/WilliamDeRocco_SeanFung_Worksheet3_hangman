@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val keyboardRow3: LinearLayout = findViewById(R.id.keyboardRow3)
         val keyboardRow4: LinearLayout = findViewById(R.id.keyboardRow4)
         val newGameButton: Button = findViewById(R.id.newGame)
+        val hintButton: Button = findViewById(R.id.hint)
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
 
@@ -39,11 +40,12 @@ class MainActivity : AppCompatActivity() {
         hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
         // start game (only initialized on initial create)
         hangmanViewModel.newGame()
-        // call refreshUI
 
         newGameButton.setOnClickListener {
-            // call refreshUI
             hangmanViewModel.newGame() // Call newGame function when button is clicked
+        }
+        hintButton.setOnClickListener {
+            hangmanViewModel.hint() // Call newGame function when button is clicked
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
