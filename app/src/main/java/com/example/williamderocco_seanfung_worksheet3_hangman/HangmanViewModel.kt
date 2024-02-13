@@ -27,7 +27,7 @@ class HangmanViewModel : ViewModel() {
     private val wordDictionary: Map<String, List<String>> = mapOf(
         "country" to listOf("america", "japan", "china", "mexico", "korea"),
         "animal" to listOf("elephant", "zebra", "chicken", "anaconda", "hippo"),
-        "fruit" to listOf("apple", "grape", "kiwi", "pear", "orange"),
+        "fruit" to listOf("apple", "grape", "kiwi", "clementine", "orange"),
         "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
@@ -128,6 +128,7 @@ class HangmanViewModel : ViewModel() {
 
             // case 3: guessed correct word
             underscoredLetters = underscoredWord
+            _underscoredLettersLiveData.value = underscoredLetters // Update underscoredLettersLiveData
             if(underscoredLetters.lowercase() == answer){
                 playing = false
                 win = true
