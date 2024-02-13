@@ -78,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/keyboardRow4"
         app:layout_constraintLeft_toLeftOf="@id/keyboardRow4"
         app:layout_constraintRight_toRightOf="@id/keyboardRow4"
-        android:text="New Game"/>
+        android:text="@string/newGame"/>
     <Button
         android:id="@+id/hint"
         android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toBottomOf="@id/newGame"
         app:layout_constraintLeft_toLeftOf="@id/newGame"
         app:layout_constraintRight_toRightOf="@id/newGame"
-        android:text="Hint"/>
+        android:text="@string/hint"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
