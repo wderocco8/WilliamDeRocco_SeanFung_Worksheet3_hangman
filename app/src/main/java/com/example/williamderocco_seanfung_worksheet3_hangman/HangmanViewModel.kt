@@ -3,6 +3,7 @@ package com.example.williamderocco_seanfung_worksheet3_hangman
 import android.content.Context
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "hangmanView"
@@ -69,7 +70,7 @@ class HangmanViewModel : ViewModel() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             button.setOnClickListener {
-                this.guess(char, false)
+                this.guess(context, char, false)
             }
 
             // Determine which row to add the button to
@@ -82,39 +83,44 @@ class HangmanViewModel : ViewModel() {
         }
     }
 
-    private fun guess(letter: Char, hint: Boolean) {
-        usedLetters.add(letter.toString())
-        val indexLetter = mutableListOf<Int>()
+    private fun guess(context: Context, letter: Char, hint: Boolean) {
+        if (playing) {
+            usedLetters.add(letter.toString())
+            val indexLetter = mutableListOf<Int>()
 
-        answer .forEachIndexed { index, c ->  //c = char
-            if (c.equals(letter, ignoreCase = true)){
-                indexLetter.add(index)
+            answer .forEachIndexed { index, c ->  //c = char
+                if (c.equals(letter, ignoreCase = true)){
+                    indexLetter.add(index)
+                }
             }
-        }
-        var underscoredWord = underscoredLetters
-        indexLetter.forEach { index ->
-            val stringBuild = StringBuilder(underscoredWord).also { it.setCharAt(index, letter)}//Used Chat GPT to understand stringBuilder and to use also.
-            underscoredWord = stringBuild.toString()
+            var underscoredWord = underscoredLetters
+            indexLetter.forEach { index ->
+                val stringBuild = StringBuilder(underscoredWord).also { it.setCharAt(index, letter)}//Used Chat GPT to understand stringBuilder and to use also.
+                underscoredWord = stringBuild.toString()
+            }
+
+            // case 1: incorrect guess (and no hint)
+            if (indexLetter.isEmpty()){
+                if(!hint)currentTries++
+                hangman = nextHangman()
+            }
+
+            // case 2: hit max tries
+            if (currentTries == maxTries){
+                playing = false
+                win = false
+            }
+
+            // case 3: guessed correct word
+            underscoredLetters = underscoredWord
+            if(underscoredLetters.lowercase() == answer){
+                playing = false
+                win = true
+            }
+        } else {
+            Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         }
 
-        // case 1: incorrect guess (and no hint)
-        if (indexLetter.isEmpty()){
-            if(!hint)currentTries++
-            hangman = nextHangman()
-        }
-
-        // case 2: hit max tries
-        if (currentTries == maxTries){
-            playing = false
-            win = false
-        }
-
-        // case 3: guessed correct word
-        underscoredLetters = underscoredWord
-        if(underscoredLetters.lowercase() == answer){
-            playing = false
-            win = true
-        }
     }
 
     fun nextHangman(): Int{//Updates the drawings
