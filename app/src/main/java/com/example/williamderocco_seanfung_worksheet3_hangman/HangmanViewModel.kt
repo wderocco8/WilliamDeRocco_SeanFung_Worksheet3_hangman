@@ -20,7 +20,6 @@ class HangmanViewModel : ViewModel() {
     var hangman: Int = R.drawable.state0
     var playing = false
     var win = false
-    var play = false
     var firstHintShowed = false
 
 
