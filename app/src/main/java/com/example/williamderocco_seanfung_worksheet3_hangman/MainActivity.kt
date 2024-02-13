@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 
@@ -42,8 +43,8 @@ class MainActivity : AppCompatActivity() {
         }
         hangmanViewModel.gameOutcomeLiveData.observe(this) { outcome ->
             when (outcome) {//Used CHAT GPT for help with this. This determines what the text will be if there is a winner
-                GameOutcome.WIN -> winGame(hangmanViewModel.answer)
-                GameOutcome.LOSS -> loseGame(hangmanViewModel.answer)
+                GameOutcome.WIN -> winGame()
+                GameOutcome.LOSS -> loseGame()
             }
         }
         hangmanViewModel.winOrLoseTextLiveData.observe(this, Observer { text ->
@@ -81,13 +82,13 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun winGame(word: String){
+    private fun winGame(){
         val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
         winOrLoseTextView.text = "YOU WIN"
     }
-    private fun loseGame(word: String){
+    private fun loseGame(){
         val answerTextView: TextView = findViewById(R.id.answerTextView)
-        answerTextView.text = word
+        Toast.makeText(this, "The correct answer was: ${hangmanViewModel.answer}", Toast.LENGTH_LONG).show()
         val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
         winOrLoseTextView.text = "YOU LOSE"
     }
