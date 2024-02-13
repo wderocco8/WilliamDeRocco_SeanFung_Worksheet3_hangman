@@ -29,6 +29,28 @@ class HangmanViewModel : ViewModel() {
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
 
+    fun newGame(){
+        val currentKey =  wordDictionary.keys.random()
+        val currentWord = wordDictionary[currentKey]!!.random()
+        // build underscored word based on currentWord (randomly chosen
+        getUnderscores(currentWord)
+        answer = currentWord
+        hint = currentKey
+        numHints = 0
+        currentTries = 0
+        usedLetters.clear()
+        playing = true
+        firstHintShowed = false
+        hangman = nextHangman()
+
+    }
+
+    private fun getUnderscores(word: String) {
+        val sb = StringBuilder()
+        word.forEach { _ -> sb.append("_")}
+        underscoredLetters = sb.toString()
+    }
+
     fun initializeKeyboardButtons(
         context: Context,
         keyboardRow1: LinearLayout,
@@ -47,7 +69,7 @@ class HangmanViewModel : ViewModel() {
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
             button.setOnClickListener {
-
+                this.guess(char, false)
             }
 
             // Determine which row to add the button to
@@ -60,7 +82,7 @@ class HangmanViewModel : ViewModel() {
         }
     }
 
-    fun guess(letter: Char, hint: Boolean) {
+    private fun guess(letter: Char, hint: Boolean) {
         usedLetters.add(letter.toString())
         val indexLetter = mutableListOf<Int>()
 
