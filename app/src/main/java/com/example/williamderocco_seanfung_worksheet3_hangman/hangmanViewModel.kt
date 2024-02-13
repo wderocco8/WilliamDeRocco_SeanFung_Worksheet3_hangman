@@ -37,7 +37,7 @@ class hangmanViewModel : ViewModel() {
         }
         var underscoredWord = underscoredLetters
         indexLetter.forEach { index ->
-            val stringBuild = StringBuilder(underscoredWord).also { it.setCharAt(index, letter)}
+            val stringBuild = StringBuilder(underscoredWord).also { it.setCharAt(index, letter)}//Used Chat GPT to understand stringBuilder and to use also.
             underscoredWord = stringBuild.toString()
         }
 
@@ -58,7 +58,7 @@ class hangmanViewModel : ViewModel() {
         }
     }
 
-    fun nextHangman(): Int{
+    fun nextHangman(): Int{//Updates the drawings
         return when (currentTries) {
             0 -> R.drawable.state0
             1 -> R.drawable.state1
@@ -81,7 +81,7 @@ class hangmanViewModel : ViewModel() {
         if (word != null){
             wordUnderscored(word)
         }
-        answer = word!!
+        answer = word!!//got from ChatGPT, would be a type error otherwise.
         numHints = 0
         currentTries = 0
         playing = true
