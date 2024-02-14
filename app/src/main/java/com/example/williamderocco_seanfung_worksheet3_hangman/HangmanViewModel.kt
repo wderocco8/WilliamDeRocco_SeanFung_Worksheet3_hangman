@@ -15,6 +15,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.Serializable
 
+
+enum class GameOutcome {
+    WIN,
+    LOSS
+}
 private const val TAG = "hangmanView"
 class HangmanViewModel : ViewModel() {
     // class variables
@@ -36,7 +41,10 @@ class HangmanViewModel : ViewModel() {
         "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
+
     private var buttonMap = mutableMapOf<Char, Button>()
+    private val _gameOutcomeLiveData = MutableLiveData<GameOutcome>()
+    val gameOutcomeLiveData: LiveData<GameOutcome> = _gameOutcomeLiveData
 
     // Define MutableLiveData for underscoredLetters and hangmanImage (chatGPT helped with this)
     private val _underscoredLettersLiveData = MutableLiveData<String>()
@@ -44,6 +52,8 @@ class HangmanViewModel : ViewModel() {
 
     private val _hangmanImageLiveData = MutableLiveData<Int>()
     val hangmanImageLiveData: LiveData<Int> = _hangmanImageLiveData
+    private val _winOrLoseTextLiveData = MutableLiveData<String>()
+    val winOrLoseTextLiveData: LiveData<String> = _winOrLoseTextLiveData
 
     private val _hintLiveData = MutableLiveData<String>()
     val hintLiveData: LiveData<String> = _hintLiveData
@@ -63,6 +73,8 @@ class HangmanViewModel : ViewModel() {
         firstHintShowed = false
         hangman = nextHangman()
         _hintLiveData.value = ""
+        _gameOutcomeLiveData.value = null
+        _winOrLoseTextLiveData.value = ""
     }
 
     private fun getUnderscores(word: String) {
@@ -155,6 +167,7 @@ class HangmanViewModel : ViewModel() {
             if (currentTries == maxTries){
                 playing = false
                 win = false
+                _gameOutcomeLiveData.value = GameOutcome.LOSS
             }
 
             // case 3: guessed correct word
@@ -163,6 +176,7 @@ class HangmanViewModel : ViewModel() {
             if(underscoredLetters.lowercase() == answer){
                 playing = false
                 win = true
+                _gameOutcomeLiveData.value = GameOutcome.WIN
             }
         }
 
