@@ -46,6 +46,9 @@ class MainActivity : AppCompatActivity() {
             when (outcome) {//Used CHAT GPT for help with this. This determines what the text will be if there is a winner
                 GameOutcome.WIN -> winGame()
                 GameOutcome.LOSS -> loseGame()
+                GameOutcome.PLAYING -> {
+                    // DO NOTHING
+                }
             }
         }
         hangmanViewModel.winOrLoseTextLiveData.observe(this, Observer { text ->

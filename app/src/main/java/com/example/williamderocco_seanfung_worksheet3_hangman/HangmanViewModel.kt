@@ -2,14 +2,12 @@ package com.example.williamderocco_seanfung_worksheet3_hangman
 
 import android.content.Context
 import android.graphics.Color
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +16,8 @@ import java.io.Serializable
 
 enum class GameOutcome {
     WIN,
-    LOSS
+    LOSS,
+    PLAYING
 }
 private const val TAG = "hangmanView"
 class HangmanViewModel : ViewModel() {
@@ -73,7 +72,7 @@ class HangmanViewModel : ViewModel() {
         showingHints = false
         hangman = nextHangman()
         _hintLiveData.value = ""
-        _gameOutcomeLiveData.value = null
+        _gameOutcomeLiveData.value = GameOutcome.PLAYING
         _winOrLoseTextLiveData.value = ""
     }
 
