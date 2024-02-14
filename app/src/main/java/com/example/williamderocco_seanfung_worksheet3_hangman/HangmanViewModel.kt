@@ -226,8 +226,10 @@ class HangmanViewModel : ViewModel() {
             }
             // third hint: show all vowels in word (and disable remaining vowels)
             2 -> {
+                showingHints = true
                 returnVal = 2
-//            showVowels()
+                displayVowels()
+                showingHints = false
             }
             // No more hints available
             else -> {
@@ -258,6 +260,19 @@ class HangmanViewModel : ViewModel() {
             }
             if (numRemoved == numToRemove){
                 return
+            }
+        }
+    }
+
+    private fun displayVowels(){
+        val vowels = "aeiou"
+
+        for (vowel in vowels) {
+            if(vowel.toString() !in usedLetters){
+                // make guess and increment count for removed letters
+                // Find the button corresponding to the letter from the buttonMap
+                val button = buttonMap[vowel]
+                button?.performClick() // Trigger the click event of the button if it exists
             }
         }
     }
