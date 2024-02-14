@@ -114,9 +114,9 @@ class HangmanViewModel : ViewModel() {
             val buttonId = View.generateViewId() // Generate unique ID for each button
             button.id = buttonId
 
+
             button.setOnClickListener {
                 if (playing) {
-//                    if (isSecondHint)
                     this.guess(context, char)
                     button.setBackgroundColor(Color.parseColor("#888888"))
                 }
@@ -124,7 +124,6 @@ class HangmanViewModel : ViewModel() {
 
             // Add button reference to the map
             buttonMap[char] = button
-
 
             // Determine which row to add the button to
             when {
@@ -137,6 +136,7 @@ class HangmanViewModel : ViewModel() {
     }
 
     private fun guess(context: Context, letter: Char) {
+        Log.d("button map: ", buttonMap.toString())
         if (!playing) {
             Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         } else if (usedLetters.contains(letter.toString())) {
