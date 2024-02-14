@@ -33,7 +33,7 @@ class HangmanViewModel : ViewModel() {
     private var hangman: Int = R.drawable.state0
     var playing = false
     var win = false
-    var firstHintShowed = false
+    var showingHints = false
     private val wordDictionary: Map<String, List<String>> = mapOf(
         "country" to listOf("america", "japan", "china", "mexico", "korea"),
         "animal" to listOf("elephant", "zebra", "chicken", "anaconda", "hippo"),
@@ -70,7 +70,7 @@ class HangmanViewModel : ViewModel() {
         currentTries = 0
         usedLetters.clear()
         playing = true
-        firstHintShowed = false
+        showingHints = false
         hangman = nextHangman()
         _hintLiveData.value = ""
         _gameOutcomeLiveData.value = null
@@ -118,7 +118,7 @@ class HangmanViewModel : ViewModel() {
             button.setOnClickListener {
                 if (playing) {
 //                    if (isSecondHint)
-                    this.guess(context, char, false)
+                    this.guess(context, char)
                     button.setBackgroundColor(Color.parseColor("#888888"))
                 }
             }
@@ -137,7 +137,7 @@ class HangmanViewModel : ViewModel() {
         }
     }
 
-    private fun guess(context: Context, letter: Char, isHint: Boolean) {
+    private fun guess(context: Context, letter: Char) {
         if (!playing) {
             Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         } else if (usedLetters.contains(letter.toString())) {
@@ -159,7 +159,7 @@ class HangmanViewModel : ViewModel() {
 
             // case 1: incorrect guess (and no hint)
             if (indexLetter.isEmpty()){
-                if(!isHint) currentTries++
+                if(!showingHints) currentTries++
                 hangman = nextHangman()
             }
 
@@ -219,8 +219,10 @@ class HangmanViewModel : ViewModel() {
             }
             // second hint: hide half of letters that are not in word
             1 -> {
+                showingHints = true
                 returnVal = 1
                 hideLetters(context)
+                showingHints = false
             }
             // third hint: show all vowels in word (and disable remaining vowels)
             2 -> {
@@ -253,12 +255,6 @@ class HangmanViewModel : ViewModel() {
                 val button = buttonMap[letter]
                 button?.performClick() // Trigger the click event of the button if it exists
                 numRemoved++
-
-//                Log.d("letter", letter.toString())
-//                Log.d("numRemoved", numRemoved.toString())
-//                Log.d("answer", answer)
-//                Log.d("is in?", "true")
-                Log.d("DEEZ NUTS", usedLetters.toString())
             }
             if (numRemoved == numToRemove){
                 return
@@ -276,7 +272,7 @@ class HangmanViewModel : ViewModel() {
         private const val KEY_CURRENT_TRIES = "current_tries"
         private const val KEY_PLAYING = "playing"
         private const val KEY_WIN = "win"
-        private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
+        private const val KEY_SHOWING_HINTS = "key_showing_hints"
         private const val KEY_BUTTON_MAP = "key_button_map"
     }
     
@@ -291,7 +287,7 @@ class HangmanViewModel : ViewModel() {
         outState.putInt(KEY_CURRENT_TRIES, currentTries)
         outState.putBoolean(KEY_PLAYING, playing)
         outState.putBoolean(KEY_WIN, win)
-        outState.putBoolean(KEY_FIRST_HINT_SHOWED, firstHintShowed)
+        outState.putBoolean(KEY_SHOWING_HINTS, showingHints)
         outState.putSerializable(KEY_BUTTON_MAP, buttonMap as Serializable)
     }
     fun restoreInstanceState(savedInstanceState: Bundle) {
@@ -306,7 +302,7 @@ class HangmanViewModel : ViewModel() {
         currentTries = savedInstanceState.getInt(KEY_CURRENT_TRIES)
         playing = savedInstanceState.getBoolean(KEY_PLAYING)
         win = savedInstanceState.getBoolean(KEY_WIN)
-        firstHintShowed = savedInstanceState.getBoolean(KEY_FIRST_HINT_SHOWED)
+        showingHints = savedInstanceState.getBoolean(KEY_SHOWING_HINTS)
         buttonMap = savedInstanceState.getSerializable(KEY_BUTTON_MAP) as? MutableMap<Char, Button> ?: mutableMapOf()
     }
 }
