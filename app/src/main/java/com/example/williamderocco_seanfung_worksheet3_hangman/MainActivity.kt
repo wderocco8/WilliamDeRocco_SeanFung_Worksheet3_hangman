@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         val hintButton: Button = findViewById(R.id.hint)
         val hangmanImageView: ImageView = findViewById(R.id.hangmanImageView)
         val answerTextView: TextView = findViewById(R.id.answerTextView)
+        val hintTextView: TextView = findViewById(R.id.hintTextView)
         val winOrLoseTextView : TextView = findViewById(R.id.winOrLose)
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {//Used web to find the orientation function.
@@ -54,21 +55,25 @@ class MainActivity : AppCompatActivity() {
         hangmanViewModel.underscoredLettersLiveData.observe(this) { underscoredLetters ->
             answerTextView.text = underscoredLetters
         }
-
         hangmanViewModel.hangmanImageLiveData.observe(this) { hangmanImage ->
             hangmanImageView.setImageResource(hangmanImage)
         }
+        hangmanViewModel.hintLiveData.observe(this) { hint ->
+            hintTextView.text = hint
+        }
 
         // initialize keyboard
-        hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4)
+        hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4, false)
         // start game (only initialized on initial create)
         hangmanViewModel.newGame()
 
         newGameButton.setOnClickListener {
             hangmanViewModel.newGame() // Call newGame function when button is clicked
+            // re-initialize keyboard
+            hangmanViewModel.initializeKeyboardButtons(this, keyboardRow1, keyboardRow2, keyboardRow3, keyboardRow4, true)
         }
         hintButton.setOnClickListener {
-            hangmanViewModel.hint() // Call newGame function when button is clicked
+            hangmanViewModel.obtainHint(this) // Call newGame function when button is clicked
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {

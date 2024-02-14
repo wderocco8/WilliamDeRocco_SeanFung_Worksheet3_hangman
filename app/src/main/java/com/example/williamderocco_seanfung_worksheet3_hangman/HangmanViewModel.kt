@@ -1,15 +1,19 @@
 package com.example.williamderocco_seanfung_worksheet3_hangman
 
 import android.content.Context
+import android.graphics.Color
 import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import java.io.Serializable
 
 
 enum class GameOutcome {
@@ -37,6 +41,8 @@ class HangmanViewModel : ViewModel() {
         "food" to listOf("pizza", "hamburger", "pasta", "burrito", "ramen"),
         "sports" to listOf("basketball", "baseball", "soccer", "football", "hockey")
     )
+
+    private var buttonMap = mutableMapOf<Char, Button>()
     private val _gameOutcomeLiveData = MutableLiveData<GameOutcome>()
     val gameOutcomeLiveData: LiveData<GameOutcome> = _gameOutcomeLiveData
 
@@ -48,6 +54,9 @@ class HangmanViewModel : ViewModel() {
     val hangmanImageLiveData: LiveData<Int> = _hangmanImageLiveData
     private val _winOrLoseTextLiveData = MutableLiveData<String>()
     val winOrLoseTextLiveData: LiveData<String> = _winOrLoseTextLiveData
+
+    private val _hintLiveData = MutableLiveData<String>()
+    val hintLiveData: LiveData<String> = _hintLiveData
 
 
     fun newGame(){
@@ -63,6 +72,7 @@ class HangmanViewModel : ViewModel() {
         playing = true
         firstHintShowed = false
         hangman = nextHangman()
+        _hintLiveData.value = ""
         _gameOutcomeLiveData.value = null
         _winOrLoseTextLiveData.value = ""
     }
@@ -80,8 +90,17 @@ class HangmanViewModel : ViewModel() {
         keyboardRow1: LinearLayout,
         keyboardRow2: LinearLayout,
         keyboardRow3: LinearLayout,
-        keyboardRow4: LinearLayout
+        keyboardRow4: LinearLayout,
+        isNewGame: Boolean
     ) {
+        // Clear existing buttons from each LinearLayout if it's a new game
+        if (isNewGame) {
+            keyboardRow1.removeAllViews()
+            keyboardRow2.removeAllViews()
+            keyboardRow3.removeAllViews()
+            keyboardRow4.removeAllViews()
+        }
+
         val alphabet = "abcdefghijklmnopqrstuvwxyz"
 
         // Loop to create buttons for each letter 'a' to 'z'
@@ -92,9 +111,21 @@ class HangmanViewModel : ViewModel() {
                 100,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
+            // Define button ID dynamically
+            val buttonId = View.generateViewId() // Generate unique ID for each button
+            button.id = buttonId
+
             button.setOnClickListener {
-                this.guess(context, char, false)
+                if (playing) {
+//                    if (isSecondHint)
+                    this.guess(context, char, false)
+                    button.setBackgroundColor(Color.parseColor("#888888"))
+                }
             }
+
+            // Add button reference to the map
+            buttonMap[char] = button
+
 
             // Determine which row to add the button to
             when {
@@ -106,7 +137,7 @@ class HangmanViewModel : ViewModel() {
         }
     }
 
-    private fun guess(context: Context, letter: Char, hint: Boolean) {
+    private fun guess(context: Context, letter: Char, isHint: Boolean) {
         if (!playing) {
             Toast.makeText(context, "Select 'new game' to start!", Toast.LENGTH_SHORT).show()
         } else if (usedLetters.contains(letter.toString())) {
@@ -128,7 +159,7 @@ class HangmanViewModel : ViewModel() {
 
             // case 1: incorrect guess (and no hint)
             if (indexLetter.isEmpty()){
-                if(!hint)currentTries++
+                if(!isHint) currentTries++
                 hangman = nextHangman()
             }
 
@@ -164,6 +195,77 @@ class HangmanViewModel : ViewModel() {
         _hangmanImageLiveData.value = hangmanImage // Update hangmanImageLiveData
         return hangmanImage
     }
+
+
+
+    fun obtainHint(context: Context): Int {
+        Log.d("current hints:", numHints.toString())
+        Log.d("used letters:", usedLetters.toString())
+        var returnVal = -1
+
+        // case 2: reached maximum number of tries
+        if (currentTries == maxTries - 1) {
+            playing = false
+            win = false
+            return -1
+        }
+
+        when (numHints) {
+            // first hint: display message for hint suggestion
+            0 -> {
+                _hintLiveData.value = hint
+                numHints++
+                return 0
+            }
+            // second hint: hide half of letters that are not in word
+            1 -> {
+                returnVal = 1
+                hideLetters(context)
+            }
+            // third hint: show all vowels in word (and disable remaining vowels)
+            2 -> {
+                returnVal = 2
+//            showVowels()
+            }
+            // No more hints available
+            else -> {
+                Toast.makeText(context, "No more hints :(", Toast.LENGTH_SHORT).show()
+                return -1
+            }
+        }
+
+        currentTries++
+        numHints++
+        hangman = nextHangman()
+
+        return returnVal
+    }
+
+    private fun hideLetters(context: Context) {
+        val numToRemove = (26 - usedLetters.size) / 2
+        var numRemoved = 0
+        for (letter in 'a'..'z') {
+            val l = letter.toString().lowercase()
+            // check that hint is in NOT in answer or usedLetters
+            if (l !in answer.lowercase() && !usedLetters.contains(l)) {
+                // make guess and increment count for removed letters
+                // Find the button corresponding to the letter from the buttonMap
+                val button = buttonMap[letter]
+                button?.performClick() // Trigger the click event of the button if it exists
+                numRemoved++
+
+//                Log.d("letter", letter.toString())
+//                Log.d("numRemoved", numRemoved.toString())
+//                Log.d("answer", answer)
+//                Log.d("is in?", "true")
+                Log.d("DEEZ NUTS", usedLetters.toString())
+            }
+            if (numRemoved == numToRemove){
+                return
+            }
+        }
+    }
+
     companion object {//Chat GPT wrote all the code below so that I can save all this time
         private const val KEY_UNDERSCORED_LETTERS = "underscored_letters"
         private const val KEY_HANGMAN_IMAGE = "hangman_image"
@@ -175,46 +277,10 @@ class HangmanViewModel : ViewModel() {
         private const val KEY_PLAYING = "playing"
         private const val KEY_WIN = "win"
         private const val KEY_FIRST_HINT_SHOWED = "first_hint_showed"
+        private const val KEY_BUTTON_MAP = "key_button_map"
     }
-
-
-    fun hint(): Int {
-        var returnVal: Int
-        // case 1: No more hints available
-        if (numHints >= 2) {
-            return -1
-        }
-
-        // case 2: reached maximum number of tries
-        if (currentTries == maxTries - 1) {
-            playing = false
-            win = false
-        }
-
-        when (numHints) {
-            0 -> {
-                returnVal = 1
-//            hideLetters()
-            }
-            1 -> {
-                returnVal = 2
-//            showVowels()
-            }
-            else -> {
-                return -1 // No more hints available
-            }
-        }
-
-        currentTries++
-        numHints++
-        hangman = nextHangman()
-
-        return returnVal
-    }
-
     
-    
-    // Save instance state
+    // Save instance state (overrides normal savInstanceState and restoreInstanceState functions)
     fun saveInstanceState(outState: Bundle) {
         outState.putString(KEY_UNDERSCORED_LETTERS, underscoredLetters)
         outState.putInt(KEY_HANGMAN_IMAGE, hangman)
@@ -226,6 +292,7 @@ class HangmanViewModel : ViewModel() {
         outState.putBoolean(KEY_PLAYING, playing)
         outState.putBoolean(KEY_WIN, win)
         outState.putBoolean(KEY_FIRST_HINT_SHOWED, firstHintShowed)
+        outState.putSerializable(KEY_BUTTON_MAP, buttonMap as Serializable)
     }
     fun restoreInstanceState(savedInstanceState: Bundle) {
         underscoredLetters = savedInstanceState.getString(KEY_UNDERSCORED_LETTERS, "")
@@ -240,5 +307,6 @@ class HangmanViewModel : ViewModel() {
         playing = savedInstanceState.getBoolean(KEY_PLAYING)
         win = savedInstanceState.getBoolean(KEY_WIN)
         firstHintShowed = savedInstanceState.getBoolean(KEY_FIRST_HINT_SHOWED)
+        buttonMap = savedInstanceState.getSerializable(KEY_BUTTON_MAP) as? MutableMap<Char, Button> ?: mutableMapOf()
     }
 }
